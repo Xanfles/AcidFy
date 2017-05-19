@@ -6,5 +6,6 @@ ingresando el path del proyecto y sha1 del mismo.
 Adjunto en la carpeta main, donde se encuentra este mismo archivo el apk generado, el cual les permitira
 revisar las funcionalidades sin necesidad de compilar el proyectro, para lograr instalarlo deben permitir la instalación
 de apk externas en su dispositivo móvil, y traspasar la apk a su memoria para luego ejecutarla.
+Esta se encuentra en un rar, al descomprimir se encontrarán dos archivos el que se debe instalar es en AcidFy.apk.
 
 Jonathan González Pacheco
