@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AcidFy</string>
+    <string name="title_activity_main_acid_fy">MainAcidFy</string>
+    <string name="title_activity_albums_view">AlbumsView</string>
+    <string name="title_activity_artists_view">ArtistsView</string>
+    <string name="title_activity_favorite_albums">FavoriteAlbums</string>
+    <string name="nombre">Nombre</string>
+    <string name="title_activity_inicio_acid_fy">InicioAcidFy</string>
+</resources>
