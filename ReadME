@@ -1,0 +1,6 @@
+Para compilar el proyecto deben aceptar lo que les diga android studio al momento de la importación, 
+por lo general hay que aceptar que cambie el path, el cúal depende del entorno del desarrollador, 
+inscribi el proyecto en la api de google, por lo cúal no deberían tener problemas al consumir los servicios
+que presta Spotify, en caso de ser así tendrían que volver a solicitar acceso desde la web que me enviaron ustedes, 
+ingresando el path del proyecto y sha1 del mismo.
+Jonathan González Pacheco
