@@ -3,4 +3,8 @@ por lo general hay que aceptar que cambie el path, el cúal depende del entorno 
 inscribi el proyecto en la api de google, por lo cúal no deberían tener problemas al consumir los servicios
 que presta Spotify, en caso de ser así tendrían que volver a solicitar acceso desde la web que me enviaron ustedes, 
 ingresando el path del proyecto y sha1 del mismo.
+Adjunto en la carpeta main, donde se encuentra este mismo archivo el apk generado, el cual les permitira
+revisar las funcionalidades sin necesidad de compilar el proyectro, para lograr instalarlo deben permitir la instalación
+de apk externas en su dispositivo móvil, y traspasar la apk a su memoria para luego ejecutarla.
+
 Jonathan González Pacheco
