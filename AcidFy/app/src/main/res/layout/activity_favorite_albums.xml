@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     tools:context="notebook.jonathan.com.acidfy.FavoriteAlbums">
 
+    <include layout="@layout/content_favorite_albums" />
 </android.support.design.widget.CoordinatorLayout>

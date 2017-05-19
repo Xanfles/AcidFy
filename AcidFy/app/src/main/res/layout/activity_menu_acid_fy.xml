@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="notebook.jonathan.com.acidfy.InicioAcidFy">
+    tools:context="notebook.jonathan.com.acidfy.MenuAcidFy">
+
+    <include layout="@layout/content_menu_acid_fy" />
 
 </android.support.design.widget.CoordinatorLayout>

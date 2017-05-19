@@ -83,10 +83,10 @@ public class MainAcidFy extends AppCompatActivity {
 
     public void progresBar(){
         progressDialog = new ProgressDialog(MainAcidFy.this);
-                progressDialog.setMax(50);
+                progressDialog.setMax(20);
                 progressDialog.setMessage("Loading....");
                 progressDialog.setTitle("Cargando contenido");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.show();
                 new Thread(new Runnable() {
             @Override

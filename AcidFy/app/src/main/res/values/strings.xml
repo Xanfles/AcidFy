@@ -6,4 +6,9 @@
     <string name="title_activity_favorite_albums">FavoriteAlbums</string>
     <string name="nombre">Nombre</string>
     <string name="title_activity_inicio_acid_fy">InicioAcidFy</string>
+    <string name="title_activity_menu_acid_fy">MenuAcidFy</string>
+    <string name="buscar">Buscar</string>
+    <string name="button">Button</string>
+    <string name="salir">Salir</string>
+    <string name="favoritos">Favoritos</string>
 </resources>

@@ -3,6 +3,7 @@
     package="notebook.jonathan.com.acidfy">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,26 +17,21 @@
             android:name=".MainAcidFy"
             android:label="@string/title_activity_main_acid_fy"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".FavoriteAlbums"
+            android:label="@string/title_activity_favorite_albums"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AlbumsView"
             android:label="@string/title_activity_albums_view"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FavoriteAlbums"
-            android:label="@string/title_activity_favorite_albums"
+            android:name=".MenuAcidFy"
+            android:label="@string/title_activity_menu_acid_fy"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".InicioAcidFy"
-            android:label="@string/title_activity_inicio_acid_fy"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

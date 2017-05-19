@@ -1,12 +1,17 @@
 package notebook.jonathan.com.acidfy;
 
+/**
+ * Created by Jonathan on 19-05-2017.
+ */
+
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,45 +33,56 @@ import java.util.List;
 import notebook.jonathan.com.acidfy.model.Artist;
 
 public class FavoriteAlbums extends AppCompatActivity {
-    ListView listFavorite;
-    List<Artist> list;
+    ListView listFavorites;
     SQLiteDatabase db;
-    String contenido,id;
     ProgressDialog progressDialog;
+    List<Artist> list;
+    Cursor c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite_albums);
+        setContentView(R.layout.activity_albums_view);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        listFavorite = (ListView) findViewById(R.id.listAlbums);
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras().getBundle("bundle");
-        id = extras.getString("id");
+        listFavorites = (ListView) findViewById(R.id.listAlbums);
         progresBar();
         SQLUtilities conexion = new SQLUtilities(FavoriteAlbums.this,"Favoritos", null,1);
         db = conexion.getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT nombre FROM Favoritos",null);
+        c = db.rawQuery("SELECT id,nombre,imagen FROM Favoritos",null);
         c.moveToFirst();
         Log.e("Sql",c.getString(0));
-        List<String> lista = new ArrayList<String>();
-        if(c.moveToFirst()){
-            do {
-                lista.add(c.getString(0));
-            }while(c.moveToNext());
+        list = new ArrayList<Artist>();
+        if (isNetworkAvailable()){
+            if(c.moveToFirst()){
+                do {
+                    list.add(new Artist(c.getString(1),c.getString(2), c.getString(0)));
+                }while(c.moveToNext());
+            }
+            ArrayAdapter<String> adapter = new CustomAdapter(FavoriteAlbums.this,R.layout.layout_album,list);
+            listFavorites.setAdapter(adapter);
+        }else{
+            if(c.moveToFirst()){
+                do {
+                    list.add(new Artist(c.getString(1),"", c.getString(0)));
+                }while(c.moveToNext());
+            }
+            ArrayAdapter<String> adapter = new CustomAdapter(FavoriteAlbums.this,R.layout.layout_album,list);
+            listFavorites.setAdapter(adapter);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter(FavoriteAlbums.this,android.R.layout.simple_list_item_1,lista);
-        listFavorite.setAdapter(adapter);
-
-
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void progresBar(){
         progressDialog = new ProgressDialog(FavoriteAlbums.this);
-        progressDialog.setMax(50);
+        progressDialog.setMax(20);
         progressDialog.setMessage("Loading....");
         progressDialog.setTitle("Cargando contenido");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
         new Thread(new Runnable() {
             @Override
@@ -114,14 +130,18 @@ public class FavoriteAlbums extends AppCompatActivity {
 
             nombre.setText(artist.getNombre());
             String img = artist.getImagen().toString();
-
-            try {
-                URL url = new URL(img);
-                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                imagen.setImageBitmap(bmp);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (img.equals("")){
+                imagen.setImageResource(R.drawable.ic_action_name);
+            }else{
+                try {
+                    URL url = new URL(img);
+                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    imagen.setImageBitmap(bmp);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
             return item;
         }
     }

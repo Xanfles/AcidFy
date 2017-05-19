@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,9 +59,6 @@ public class AlbumsView extends AppCompatActivity {
         getArtistID.execute(new String[] {"https://api.spotify.com/v1/artists/"+id+"/albums"});
         SQLUtilities conexion = new SQLUtilities(AlbumsView.this,"Favoritos", null,1);
         db = conexion.getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT nombre FROM Favoritos",null);
-        c.moveToFirst();
-        Log.e("Sql",c.getString(0));
 
         listAlbum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,7 +70,7 @@ public class AlbumsView extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         db.execSQL("INSERT INTO Favoritos(id,nombre,imagen) VALUES('"+list.get(position).getId() +"','"+  list.get(position).getNombre() +"','"+ list.get(position).getImagen() +"')");
-                        Toast.makeText(AlbumsView.this,"Album agregado a Favoritos",Toast.LENGTH_SHORT);
+                        Toast.makeText(AlbumsView.this,"Album agregado a Favoritos",Toast.LENGTH_SHORT).show();
                     }
                 });
                 alertDialogBuilder.setNeutralButton("Cerrar", new DialogInterface.OnClickListener() {
@@ -92,10 +88,10 @@ public class AlbumsView extends AppCompatActivity {
 
     public void progresBar(){
         progressDialog = new ProgressDialog(AlbumsView.this);
-        progressDialog.setMax(50);
+        progressDialog.setMax(20);
         progressDialog.setMessage("Loading....");
         progressDialog.setTitle("Cargando contenido");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
         new Thread(new Runnable() {
             @Override
@@ -161,29 +157,33 @@ public class AlbumsView extends AppCompatActivity {
             super.onPreExecute();
         }
         protected void onPostExecute(Boolean result) {
-            JSONObject json = null;    // create JSON obj from string
-            String imagen = "";
-            try {
-                json = new JSONObject(contenido);
-                JSONArray json3 = json.getJSONArray("items");
-                Log.e("contenido",json.getJSONArray("items").getJSONObject(1).getJSONArray("images").getJSONObject(0).getString("url").toString());
-                list = new ArrayList<Artist>();
-                for(int i = 0; i < json3.length(); i++){
-                    String img = json.getJSONArray("items").getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("url").toString();
-                    String name = json.getJSONArray("items").getJSONObject(i).getString("name");
-                    String id = json.getJSONArray("items").getJSONObject(i).getString("id");
-                    Log.e("id", id);
-                    if(img.isEmpty()){
-                        imagen = "http://vignette2.wikia.nocookie.net/assassinscreed/images/3/39/Not-found.jpg/revision/latest?cb=20110517171552";
-                    }else{
-                        imagen = img.toString();
+            if (result){
+                JSONObject json = null;    // create JSON obj from string
+                String imagen = "";
+                try {
+                    json = new JSONObject(contenido);
+                    JSONArray json3 = json.getJSONArray("items");
+                    Log.e("contenido",json.getJSONArray("items").getJSONObject(1).getJSONArray("images").getJSONObject(0).getString("url").toString());
+                    list = new ArrayList<Artist>();
+                    for(int i = 0; i < json3.length(); i++){
+                        String img = json.getJSONArray("items").getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("url").toString();
+                        String name = json.getJSONArray("items").getJSONObject(i).getString("name");
+                        String id = json.getJSONArray("items").getJSONObject(i).getString("id");
+                        Log.e("id", id);
+                        if(img.isEmpty()){
+                            imagen = "http://vignette2.wikia.nocookie.net/assassinscreed/images/3/39/Not-found.jpg/revision/latest?cb=20110517171552";
+                        }else{
+                            imagen = img.toString();
+                        }
+                        list.add(new Artist(name, imagen, id));
                     }
-                    list.add(new Artist(name, imagen, id));
+                    ArrayAdapter<Artist> adapter = new AlbumsView.CustomAdapter(AlbumsView.this,R.layout.layout_album,list);
+                    listAlbum.setAdapter(adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                ArrayAdapter<Artist> adapter = new AlbumsView.CustomAdapter(AlbumsView.this,R.layout.layout_album,list);
-                listAlbum.setAdapter(adapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }else{
+                Toast.makeText(AlbumsView.this,"No existen coincidencias",Toast.LENGTH_SHORT).show();
             }
         }
 
